@@ -1,0 +1,3 @@
+/home/thorbias/Área de Trabalho/ex-nihilo/CMakeFiles/program.dir
+/home/thorbias/Área de Trabalho/ex-nihilo/CMakeFiles/edit_cache.dir
+/home/thorbias/Área de Trabalho/ex-nihilo/CMakeFiles/rebuild_cache.dir
