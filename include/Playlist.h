@@ -31,9 +31,16 @@ public:
     Node <Musica*> next_music();
     void print_music();
 
-    void adicionarMusica(Playlist *play);
+    void adicionarMusica(Playlist &play);
     void removerMusica(Playlist &play);
     Playlist(Playlist &play);
+
+    Playlist operator+(Playlist &play);
+    Playlist operator+(Musica *music);
+    Playlist operator-(Playlist &play);
+    Playlist operator-(Musica *music);
+    Playlist operator>>(Musica *music);
+    Playlist operator>>(Musica *music);
 };
 
 #endif

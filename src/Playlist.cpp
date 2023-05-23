@@ -79,8 +79,17 @@ void print_music(Lista<Musica *> songs, int tamanho)
     }
 }
 
-void Playlist::adicionarMusica( Playlist &play){
-
+void Playlist::adicionarMusica(Playlist &play){
     musicas.add_elements(play.getMusicas());
+}
 
+void Playlist::removerMusica(Playlist &play){
+    musicas.remove_elements(play.getMusicas());
+}
+
+Playlist::Playlist(Playlist &play)
+{
+    Playlist nova(play.getNome());
+    nova.musicas = play.getMusicas();
+    nova.contador = play.contador;
 }

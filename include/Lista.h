@@ -107,13 +107,13 @@ public:
         }
     }
 
-    add_elements(Lista <T> &list)
+    add_elements(Lista<T> &list)
     {
         this->cauda->proximo = list.cabeca;
         this->cauda = list.cauda;
     }
 
-    remove_elements(Lista <T> &list)
+    remove_elements(Lista<T> &list)
     {
         for (int i = 0; i < tamanho; i++)
         {
@@ -133,11 +133,19 @@ public:
         return nova;
     }
 
+    Lista<T> operator+(Lista_A<T> &list, Lista<T>)
+    {
+    }
 
-    Lista<T> operator +(Lista_A <T> &list, Lista <T> ){
+    Lista <T> operator<<(Node <T> *no)
+    {
 
     }
 
+    Lista <T> operator>>(Node <T> *no)
+    {
+
+    }
 };
 
 #endif
