@@ -78,3 +78,9 @@ void print_music(Lista<Musica *> songs, int tamanho)
         print_music(songs, tamanho - 1);
     }
 }
+
+void Playlist::adicionarMusica( Playlist &play){
+
+    musicas.add_elements(play.getMusicas());
+
+}

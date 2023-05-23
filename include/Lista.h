@@ -6,7 +6,7 @@
 
 using namespace std;
 
-//Criação do template
+// Criação do template
 template <typename T>
 
 class Lista
@@ -106,6 +106,38 @@ public:
             }
         }
     }
+
+    add_elements(Lista <T> &list)
+    {
+        this->cauda->proximo = list.cabeca;
+        this->cauda = list.cauda;
+    }
+
+    remove_elements(Lista <T> &list)
+    {
+        for (int i = 0; i < tamanho; i++)
+        {
+            if (this->busca(i)->dado == list.busca(i)->dado)
+            {
+                this->remover(i);
+            }
+        }
+    }
+
+    Lista(Lista &list)
+    {
+        Lista nova;
+        nova.cabeca = list.cauda;
+        nova.cauda = list.cauda;
+        nova.tamanho = list.tamanho;
+        return nova;
+    }
+
+
+    Lista<T> operator +(Lista_A <T> &list, Lista <T> ){
+
+    }
+
 };
 
 #endif

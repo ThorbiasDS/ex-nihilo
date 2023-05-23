@@ -30,6 +30,10 @@ public:
     void removerMusica(string nome_musica);
     Node <Musica*> next_music();
     void print_music();
+
+    void adicionarMusica(Playlist *play);
+    void removerMusica(Playlist &play);
+    Playlist(Playlist &play);
 };
 
 #endif
