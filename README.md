@@ -11,7 +11,7 @@ Por exemplo:
 	
 #### Inserir músicas:
 
- 	Música: Yellow <br>
+ 	Música: Yellow
  	Artista: Coldplay
 
 #### Remover músicas: 
@@ -32,20 +32,20 @@ Por exemplo:
 
 #### Adicionar música em playlist:
 
-	Nome da Playlist: Playlist1 <br>
-	Nome da Musica: Yellow <br>
+	Nome da Playlist: Playlist1
+	Nome da Musica: Yellow
 	Nome do Artista: Coldplay
 
 #### Mover música:
 
-	Nome da Playlist de Origem: Playlist1 <br>
-	Nome da Playlist de Destino: Playlist2 <br>
-	Nome da música: Yellow <br>
+	Nome da Playlist de Origem: Playlist1
+	Nome da Playlist de Destino: Playlist2
+	Nome da música: Yellow
 	Nome do Artista: Coldplay
 
 #### Remover música:
 
-	Nome da Playlist: Playlist1 <br>
+	Nome da Playlist: Playlist1
 	Nome da Musica: Yellow
 
 Limitações: Voltar ao menu imediatamente anterior. <br>
