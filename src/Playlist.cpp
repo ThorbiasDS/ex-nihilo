@@ -79,12 +79,22 @@ void print_music(Lista<Musica *> songs, int tamanho)
     }
 }
 
-void Playlist::adicionarMusica(Playlist &play){
-    musicas.add_elements(play.getMusicas());
+void Playlist::adicionarMusica(Playlist *play)
+{
+    musicas.add_elements(play->musicas);
 }
 
-void Playlist::removerMusica(Playlist &play){
-    musicas.remove_elements(play.getMusicas());
+int Playlist::removerMusica(Playlist *play)
+{
+    int quant = 0;
+    for (int i = 0; i < play->getMusicas().tamanho; i++)
+    {
+        if(this->musicas.busca(i)->dado->getTitulo() == play->getMusicas().busca(i)->dado->getTitulo())
+        {
+            quant++;
+        }
+    }
+    musicas.remove_elements(play->musicas);
 }
 
 Playlist::Playlist(Playlist &play)
