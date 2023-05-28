@@ -89,17 +89,18 @@ int Playlist::removerMusica(Playlist *play)
     int quant = 0;
     for (int i = 0; i < play->getMusicas().tamanho; i++)
     {
-        if(this->musicas.busca(i)->dado->getTitulo() == play->getMusicas().busca(i)->dado->getTitulo())
+        if((this->musicas.busca(i)->dado->getTitulo()).compare(play->getMusicas().busca(i)->dado->getTitulo()) == 0)
         {
             quant++;
         }
     }
     musicas.remove_elements(play->musicas);
+    return quant;
 }
 
 Playlist::Playlist(Playlist &play)
 {
-    Playlist nova(play.getNome());
-    nova.musicas = play.getMusicas();
-    nova.contador = play.contador;
+    this->nome = play.nome;
+    this->contador = play.contador;
+    this->musicas = play.musicas;
 }

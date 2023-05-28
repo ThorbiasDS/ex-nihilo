@@ -23,10 +23,6 @@ public:
 
     string getArtista();
     void setArtista(string artista);
-
-    void adicionarMusica(Musica *song);
-    bool removerMusica(string nome_musica);
-    void print_music();
 };
 
 #endif

@@ -25,10 +25,11 @@ public:
 
     ~Lista()
     {
-        // for (int i = 0; i < tamanho; i++)
-        // {
-        //     remover(0);
-        // }
+        //Verificar com o professor se isso está correto
+        for (int i = 0; i < tamanho; i++)
+        {
+            remover(i);
+        }
     }
 
     void inserir(T valor)
@@ -48,18 +49,18 @@ public:
         }
     }
 
-    Node<T> *busca(int n)
+    Node<T> *busca(int indice)
     {
-        if (n < tamanho && n >= 0)
+        if (indice < tamanho && indice >= 0)
         {
-            Node<T> *p;
-            p = cabeca;
+            Node<T> *aux;
+            aux = cabeca;
 
-            for (int i = 0; i < n; i++)
+            for (int i = 0; i < indice; i++)
             {
-                p = p->proximo;
+                aux = aux->proximo;
             }
-            return p;
+            return aux;
         }
         else
         {
@@ -107,13 +108,13 @@ public:
         }
     }
 
-    add_elements(Lista<T> &list)
+    void add_elements(Lista<T> &list)
     {
         this->cauda->proximo = list.cabeca;
         this->cauda = list.cauda;
     }
 
-    remove_elements(Lista<T> &list)
+    void remove_elements(Lista<T> &list)
     {
         for (int i = 0; i < tamanho; i++)
         {
@@ -126,25 +127,21 @@ public:
 
     Lista(Lista &list)
     {
-        Lista nova;
-        nova.cabeca = list.cauda;
-        nova.cauda = list.cauda;
-        nova.tamanho = list.tamanho;
-        return nova;
+        this->cabeca = list.cabeca;
+        this->cauda = list.cauda;
+        this->tamanho = list.tamanho;
     }
 
-    Lista<T> operator+(Lista_A<T> &list, Lista<T>)
+    Lista<T> operator+(Lista <T> &list)
     {
     }
 
     Lista <T> operator<<(Node <T> *no)
     {
-
     }
 
     Lista <T> operator>>(Node <T> *no)
     {
-
     }
 };
 

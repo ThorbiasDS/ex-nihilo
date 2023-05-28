@@ -27,7 +27,7 @@ public:
     void setMusicas(Lista<Musica *> musicas);
 
     void adicionarMusica(string titulo, string artista);
-    void removerMusica(string nome_musica);
+    void removerMusica(string titulo);
     Node <Musica*> next_music();
     void print_music();
 
@@ -40,7 +40,7 @@ public:
     Playlist operator-(Playlist &play);
     Playlist operator-(Musica *music);
     Playlist operator>>(Musica *music);
-    Playlist operator>>(Musica *music);
+    Playlist operator<<(Musica *music);
 };
 
 #endif

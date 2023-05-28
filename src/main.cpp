@@ -99,7 +99,6 @@ int inserir_musica_playlist(string name, string title, string author)
 {
     bool existe = false;
     int op = 0;
-
     
     for (int i = 0; i < library.tamanho; i++)
     {
