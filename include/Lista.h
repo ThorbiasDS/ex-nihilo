@@ -25,7 +25,7 @@ public:
 
     ~Lista()
     {
-        //Verificar com o professor se isso está correto
+        // Verificar com o professor se isso está correto
         for (int i = 0; i < tamanho; i++)
         {
             remover(i);
@@ -132,16 +132,39 @@ public:
         this->tamanho = list.tamanho;
     }
 
-    Lista<T> operator+(Lista <T> &list)
+    Lista<T> operator+(Lista<T> &list)
     {
+        Lista result;
+        result.cabeca = this->cabeca;
+        result.cauda = list.cauda;
+        return result;
     }
 
-    Lista <T> operator<<(Node <T> *no)
+    void operator>>(Node<T> *no)
     {
+        Node<T> *aux = busca((this->tamanho - 1));
+        if (aux->proximo == nullptr)
+        {
+            no = nullptr;
+        }
+        else
+        {
+            no = aux->proximo;
+            delete aux->proximo;
+            this->tamanho--;
+            this->cauda = aux;
+        }
+
     }
 
-    Lista <T> operator>>(Node <T> *no)
+    void operator<<(Node<T> *no)
     {
+        if(no != nullptr)
+        {
+            cauda->proximo = no;
+            cauda = no;
+            tamanho++;
+        }
     }
 };
 

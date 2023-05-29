@@ -553,8 +553,19 @@ CMakeFiles/program.dir/src/main.cpp.o: src/main.cpp \
   include/Playlist.h \
   include/Lista.h \
   include/Node.h \
-  include/Musica.h
+  include/Musica.h \
+  /usr/include/c++/11/fstream \
+  /usr/include/c++/11/bits/codecvt.h \
+  /usr/include/x86_64-linux-gnu/c++/11/bits/basic_file.h \
+  /usr/include/x86_64-linux-gnu/c++/11/bits/c++io.h \
+  /usr/include/c++/11/bits/fstream.tcc
 
+
+/usr/include/c++/11/bits/fstream.tcc:
+
+/usr/include/x86_64-linux-gnu/c++/11/bits/c++io.h:
+
+/usr/include/x86_64-linux-gnu/c++/11/bits/basic_file.h:
 
 include/Lista.h:
 
@@ -756,6 +767,8 @@ include/Musica.h:
 
 /usr/include/c++/11/iosfwd:
 
+/usr/include/c++/11/bits/codecvt.h:
+
 /usr/include/x86_64-linux-gnu/bits/time64.h:
 
 /usr/include/x86_64-linux-gnu/bits/types/__mbstate_t.h:
@@ -921,6 +934,8 @@ src/Musica.cpp:
 /usr/include/x86_64-linux-gnu/bits/endian.h:
 
 /usr/include/c++/11/bits/basic_string.h:
+
+/usr/include/c++/11/fstream:
 
 /usr/include/c++/11/bits/cxxabi_forced.h:
 

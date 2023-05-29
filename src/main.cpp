@@ -2,6 +2,7 @@
 #include "Playlist.h"
 #include <iostream>
 #include <string>
+#include <fstream>
 
 using namespace std;
 
@@ -197,6 +198,13 @@ void listar_musicas_playlist(string name)
     }
 }
 
+//Funções referente à manipulação de arquivos
+
+// Lista <Playlist> split(string *texto, char separador)
+// {
+    
+// }
+
 // Funções de impressões de menu
 
 void menu()
@@ -248,13 +256,21 @@ void editar_playlist()
     cout << "Escolha uma opção: ";
 }
 
-int main()
+int main(int argc, char *argv[])
 {
     int opcao = 0;
     int subopcao = 0;
     int subopcao2 = 0;
     Node<Playlist *> *atual;
     Node<Musica *> *proxima;
+    ifstream arquivo_entrada;
+    ofstream arquivo_saida;
+
+    arquivo_entrada.open("entrada.txt", ios::in);
+    if(!arquivo_entrada)
+    {
+        abort();
+    }
 
     while (opcao != 3)
     {

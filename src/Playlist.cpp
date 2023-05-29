@@ -104,3 +104,33 @@ Playlist::Playlist(Playlist &play)
     this->contador = play.contador;
     this->musicas = play.musicas;
 }
+
+Playlist Playlist::operator+(Playlist &play)
+{
+
+}
+
+Playlist Playlist::operator+(Musica *music)
+{
+
+}
+
+Playlist Playlist::operator-(Playlist &play)
+{
+
+}
+
+Playlist Playlist::operator-(Musica *music)
+{
+
+}
+
+Playlist Playlist::operator>>(Musica *music)
+{
+
+}
+
+Playlist Playlist::operator<<(Musica *music)
+{
+    
+}
