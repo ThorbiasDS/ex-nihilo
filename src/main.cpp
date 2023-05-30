@@ -1,3 +1,10 @@
+/** Descrição do arquivo.
+/*
+* @author Hosana Iasmin & Tobias Daniel
+* @since 01/05/2023
+* @version 2.0
+*/
+
 #include "Musica.h"
 #include "Playlist.h"
 #include <iostream>
@@ -6,17 +13,28 @@
 
 using namespace std;
 
+/// \brief Listas globais de músicas e playlists
+
 Lista<Musica *> louvores;
 Lista<Playlist *> library;
 
-// Funções pertencentes à opção Gerenciar Músicas
+/**
+ * \brief Funções pertencentes à opção Gerenciar Músicas
+ * 
+ * Essas funções servem para adicionar, remover e listar as músicas do sistema.
+ * */ 
 
+
+/// \param titulo Título da música
+/// \param artista Nome do autor da música
 void adicionar_musicas(string title, string author)
 {
     Musica *louvor = new Musica(title, author);
     louvores.inserir(louvor);
 }
 
+/// \param titulo Título da música
+/// \return Retorna verdadeiro se as músicas foram removidas com sucesso da playlist e do sistema
 void remover_musicas(string title)
 {
     for (int i = 0; i < library.tamanho; i++)
@@ -49,8 +67,15 @@ void listar_musicas()
     }
 }
 
-// Funções referentes à opção Gerenciar Playlists
+/** 
+ * \brief Funções referentes à opção Gerenciar Playlists
+ * 
+ * Essas funções fazem a adição, remoção e listagem das playlists do sistema.
+ * Além disso, temos as funções para tocar uma playlist e tocar a próxima música.
+ * Por fim, há opção de entrar em uma submenu para a edição de playlists específicas
+ * */
 
+/// \param nome Nome da playlist a ser tocada
 Node<Playlist *> *tocar_playlist(string name)
 {
     for (int i = 0; i < library.tamanho; i++)
@@ -63,6 +88,7 @@ Node<Playlist *> *tocar_playlist(string name)
     return nullptr;
 }
 
+/// \param nome Nome da playlist a ser adicionada
 void adicionar_playlists(string name)
 {
     Playlist *play = new Playlist(name);
@@ -77,6 +103,7 @@ void listar_playlists()
     }
 }
 
+/// \param nome Nome da playlist a ser removida
 void remover_playlists(string name)
 {
     for (int i = 0; i < library.tamanho; i++)
@@ -94,8 +121,16 @@ void remover_playlists(string name)
     }
 }
 
-// Submenu de editar playlist
+/**
+ * \brief Funções referentes ao submenu de edição de playlists
+ * 
+ * Aqui temos as opções de inserir música em uma determinada playlist, remover e listar
+*/
 
+/// @param name Nome da playlist
+/// @param title Título da música
+/// @param author Autor da músca
+/// @return O retorno 1 significa que a playlist não foi encontrada, o 2 significa que a música foi cadastrada com sucesso e o 3 que a música não está cadastrada no sistema
 int inserir_musica_playlist(string name, string title, string author)
 {
     bool existe = false;
@@ -140,6 +175,10 @@ int inserir_musica_playlist(string name, string title, string author)
     return op;
 }
 
+/// @param name Nome da playlist
+/// @param title Título da música
+/// @param author Autor da músca
+/// @return O retorno 1 significa que a playlist não foi encontrada, o 2 significa que a música foi cadastrada com sucesso e o 3 que a música não está cadastrada no sistema
 int remover_musica_playlist(string name, string title)
 {
     bool existe = false;
@@ -184,6 +223,7 @@ int remover_musica_playlist(string name, string title)
     return op;
 }
 
+/// @param name Nome da playlist
 void listar_musicas_playlist(string name)
 {
     for (int i = 0; i < library.tamanho; i++)
@@ -200,13 +240,25 @@ void listar_musicas_playlist(string name)
 
 //Funções referente à manipulação de arquivos
 
-// Lista <Playlist> split(string *texto, char separador)
-// {
+Lista <string> split(string *texto, char separador)
+{
+    int inicio = 0;
+    int fim = 0;
+    Lista <string> palavras;
+    string info;
     
-// }
+    fim = texto->find(separador);
 
-// Funções de impressões de menu
+    info = texto->substr(inicio, fim);
+    palavras.inserir(info);
+    texto->erase(inicio, fim-inicio);
 
+    return palavras;
+}
+
+/// \brief Funções para as impressões dos menus
+
+/// \brief Menu principal 
 void menu()
 {
     cout << "========================================" << endl;
@@ -219,6 +271,7 @@ void menu()
     cout << "Escolha uma opção: ";
 }
 
+/// \brief Menu de gerenciar músicas
 void submenu1()
 {
     cout << "========================================" << endl;
@@ -230,6 +283,7 @@ void submenu1()
     cout << "Escolha uma opção: ";
 }
 
+/// \brief Menu de gerenciar playlists
 void submenu2()
 {
     cout << "========================================" << endl;
@@ -244,6 +298,23 @@ void submenu2()
     cout << "Escolha uma opção: ";
 }
 
+void submenu2_novo()
+{
+    cout << "========================================" << endl;
+    cout << "1 - Tocar playlist" << endl;
+    cout << "2 - Criar playlist" << endl;
+    cout << "3 - Listar playlists" << endl;
+    cout << "4 - Remover playlist" << endl;
+    cout << "5 - Tocar próxima música" << endl;
+    cout << "6 - Unir playlists" << endl;
+    cout << "7 - Subtrair playlists" << endl;
+    cout << "8 - Editar playlist" << endl;
+    cout << "9 - Voltar ao menu principal" << endl;
+    cout << "========================================" << endl;
+    cout << "Escolha uma opção: ";
+}
+
+/// \brief Menu de editar playlists
 void editar_playlist()
 {
     cout << "========================================" << endl;
@@ -256,6 +327,19 @@ void editar_playlist()
     cout << "Escolha uma opção: ";
 }
 
+void editar_playlist_novo()
+{
+    cout << "========================================" << endl;
+    cout << "1 - Inserir música" << endl;
+    cout << "2 - Mover música" << endl;
+    cout << "3 - Remover música" << endl;
+    cout << "4 - Listar músicas da playlist" << endl;
+    cout << "5 - Extair última música" << endl;
+    cout << "6 - Voltar ao menu principal" << endl;
+    cout << "========================================" << endl;
+    cout << "Escolha uma opção: ";
+}
+
 int main(int argc, char *argv[])
 {
     int opcao = 0;
@@ -263,13 +347,22 @@ int main(int argc, char *argv[])
     int subopcao2 = 0;
     Node<Playlist *> *atual;
     Node<Musica *> *proxima;
-    ifstream arquivo_entrada;
-    ofstream arquivo_saida;
+    std::ifstream file("entrada.txt");
+    int linha = 0;
+    string palavra;
 
-    arquivo_entrada.open("entrada.txt", ios::in);
-    if(!arquivo_entrada)
+    file.open("entrada.txt", ios::in);
+    if(!file)
     {
         abort();
+    }
+
+    while(!file.eof())
+    {
+        palavra = getline(file, linha);
+        split(&palavra, ';');
+        split(&palavra, ':');
+        split(&palavra, ',');
     }
 
     while (opcao != 3)

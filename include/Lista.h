@@ -1,21 +1,32 @@
+/**
+ * @author Hosana Iasmin & Tobias Daniel
+ * @since 01/05/2023
+ * @version 2.0
+ */
+
 #ifndef LISTA_H
 #define LISTA_H
+
+/// @brief Essa classe implementa a nossa lista ligada, utilizando os nós criados na classe Node
 
 #include "Node.h"
 #include <iostream>
 
 using namespace std;
 
-// Criação do template
+/// @brief Criação do template
 template <typename T>
 
 class Lista
 {
 public:
+
+    /// @brief Ponteiros para nós da cabeça e da cauda da lista e variável que armazena o tamanho da lista
     Node<T> *cabeca;
     Node<T> *cauda;
     int tamanho;
 
+    /// @brief Construtor da classe
     Lista()
     {
         this->cabeca = nullptr;
@@ -23,15 +34,17 @@ public:
         this->tamanho = 0;
     }
 
+    /// @brief Destrutor da classe para eliminar cada nó da classe
     ~Lista()
     {
-        // Verificar com o professor se isso está correto
         for (int i = 0; i < tamanho; i++)
         {
             remover(i);
         }
     }
 
+    /// @brief Método para inserção de novos nós na lista. Verifica-se se ele é o primeiro elemento a ser inserido ou não
+    /// @param valor Dado genérica para ser colocado no nó, pode ser playlist ou música
     void inserir(T valor)
     {
         Node<T> *no = new Node(valor);
@@ -49,6 +62,10 @@ public:
         }
     }
 
+
+    /// @brief Esse método serve para encontrar um nó na lista
+    /// @param indice O índice do elemento que se deseja encontrar
+    /// @return O método retorna o nó desejado
     Node<T> *busca(int indice)
     {
         if (indice < tamanho && indice >= 0)
@@ -68,6 +85,8 @@ public:
         }
     }
 
+    /// @brief O método remove um nó da lista verificando se ele vai ser removido no início, no meio ou no fim da lista
+    /// @param indice Índice do nó a ser recebido
     void remover(int indice)
     {
         Node<T> *p;
@@ -108,12 +127,16 @@ public:
         }
     }
 
+    /// @brief Método para adicionar outra playlist no fim da atual
+    /// @param list Lista a ser adicionada no fim
     void add_elements(Lista<T> &list)
     {
         this->cauda->proximo = list.cabeca;
         this->cauda = list.cauda;
     }
 
+    /// @brief Remove as músicas da playlist atual que estiverem na música recebida por parâmetro
+    /// @param list Playlist que contêm as músicas que devem ser removidas
     void remove_elements(Lista<T> &list)
     {
         for (int i = 0; i < tamanho; i++)
@@ -125,6 +148,8 @@ public:
         }
     }
 
+    /// @brief Construtor cópia 
+    /// @param list Lista para servir como cópia
     Lista(Lista &list)
     {
         this->cabeca = list.cabeca;
@@ -132,6 +157,9 @@ public:
         this->tamanho = list.tamanho;
     }
 
+    /// @brief Método de sobrecarga do operador +, 
+    /// @param list 
+    /// @return 
     Lista<T> operator+(Lista<T> &list)
     {
         Lista result;
@@ -154,12 +182,11 @@ public:
             this->tamanho--;
             this->cauda = aux;
         }
-
     }
 
     void operator<<(Node<T> *no)
     {
-        if(no != nullptr)
+        if (no != nullptr)
         {
             cauda->proximo = no;
             cauda = no;
