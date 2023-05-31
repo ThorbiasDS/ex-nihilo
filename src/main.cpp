@@ -9,11 +9,12 @@
 #include "Playlist.h"
 #include <iostream>
 #include <string>
-#include <fstream>
 
 using namespace std;
 
-/// \brief Listas globais de músicas e playlists
+/**
+ * \brief Listas globais de músicas e playlists
+*/
 
 Lista<Musica *> louvores;
 Lista<Playlist *> library;
@@ -240,23 +241,28 @@ void listar_musicas_playlist(string name)
 
 //Funções referente à manipulação de arquivos
 
-Lista <string> split(string *texto, char separador)
+Lista <string> split(string &texto, char separador)
 {
     int inicio = 0;
     int fim = 0;
+
     Lista <string> palavras;
     string info;
     
-    fim = texto->find(separador);
+    fim = texto.find(separador);
 
-    info = texto->substr(inicio, fim);
+    info = texto.substr(inicio, fim);
     palavras.inserir(info);
-    texto->erase(inicio, fim-inicio);
+    texto.erase(inicio, fim-inicio);
 
     return palavras;
 }
 
-/// \brief Funções para as impressões dos menus
+/**
+ * \brief Funções para as impressões dos menus
+ * 
+ * Essas funções são chamados no main para apresentar ao usuário as opções que ele tem disponível para usar no sistema.
+*/
 
 /// \brief Menu principal 
 void menu()
@@ -342,29 +348,27 @@ void editar_playlist_novo()
 
 int main(int argc, char *argv[])
 {
+
+    /// @brief Variáveis para a escolha das opções nos menus
     int opcao = 0;
     int subopcao = 0;
     int subopcao2 = 0;
+
+    /// @brief Variáveis usadas para armazenar a playlist que está sendo tocada e para guardar a próxima música a ser tocada
     Node<Playlist *> *atual;
     Node<Musica *> *proxima;
-    std::ifstream file("entrada.txt");
-    int linha = 0;
-    string palavra;
 
-    file.open("entrada.txt", ios::in);
-    if(!file)
-    {
-        abort();
-    }
+    string p1 = "Melhores;Não Fale:Os Arrais,Por todos os dias:Projeto Sola, Entre Deuses:João Manô";
 
-    while(!file.eof())
-    {
-        palavra = getline(file, linha);
-        split(&palavra, ';');
-        split(&palavra, ':');
-        split(&palavra, ',');
-    }
+    Lista <string> plays;
+    Lista <string> descricao;
+    Lista <string> criadores;
+    
+    plays = split(p1, ';');
+    descricao = split(p1, ':');
+    criadores = split(p1, ',');
 
+    /// @brief Enquanto a opção for diferente de 3 chama o menu, quando for igual encerra o programa
     while (opcao != 3)
     {
         menu();
@@ -372,12 +376,12 @@ int main(int argc, char *argv[])
 
         switch (opcao)
         {
-        //Gerenciar Músicas
+        /// @brief Gerenciar músicas Músicas
         case 1:
             submenu1();
             cin >> subopcao;
 
-            //Adicionar música
+            /// @brief Adicionar música
             if (subopcao == 1)
             {
                 string title, author;
@@ -394,7 +398,7 @@ int main(int argc, char *argv[])
                 cout << endl;
             }
 
-            //Remover música
+            /// @brief Remover música
             else if (subopcao == 2)
             {
                 string title;
@@ -409,7 +413,7 @@ int main(int argc, char *argv[])
                 cout << endl;
             }
 
-            //Listar músicas
+            /// @brief Listar músicas
             else if (subopcao == 3)
             {
                 cout << "========================================" << endl;
@@ -420,7 +424,7 @@ int main(int argc, char *argv[])
                 cout << "========================================" << endl;
             }
 
-            //Voltar ao menu principal
+            /// @brief Voltar ao menu principal
             else if (subopcao == 4)
             {
                 continue;
@@ -428,12 +432,12 @@ int main(int argc, char *argv[])
 
             break;
 
-        //Gerenciar Playlists
+        /// @brief Gerenciar Playlists
         case 2:
             submenu2();
             cin >> subopcao;
 
-            //Tocar playlist
+            /// @brief Tocar playlist
             if (subopcao == 1)
             {
                 string name;
@@ -457,7 +461,7 @@ int main(int argc, char *argv[])
                 continue;
             }
 
-            //Criar playlist
+            /// @brief Criar playlist
             else if (subopcao == 2)
             {
                 string name;
@@ -472,7 +476,7 @@ int main(int argc, char *argv[])
                 cout << endl;
             }
 
-            //Listar playlists
+            /// @brief Listar playlists
             else if (subopcao == 3)
             {
                 while ((getchar()) != '\n');
@@ -484,7 +488,7 @@ int main(int argc, char *argv[])
                 cout << "========================================" << endl;
             }
 
-            //Remover playlist
+            /// @brief Remover playlist
             else if (subopcao == 4)
             {
                 string name;
@@ -499,7 +503,7 @@ int main(int argc, char *argv[])
                 cout << endl;
             }
 
-            //Tocar próxima música
+            /// @brief Tocar próxima música
             else if (subopcao == 5)
             {
                 *proxima = atual->dado->next_music();
@@ -515,7 +519,7 @@ int main(int argc, char *argv[])
                 }
             }
 
-            //Editar playlist
+            /// @brief Editar playlist
             else if (subopcao == 6)
             {
                 editar_playlist();
@@ -656,13 +660,14 @@ int main(int argc, char *argv[])
             }
             break;
 
-        //Sair
+        /// @brief Encerrar o programa
         case 3:
             cout << "========================================" << endl;
             cout << "||   Obrigado por usar o Ex Nihilo!   ||" << endl;
             cout << "========================================" << endl;
             break;
 
+        /// @brief Se o usuário digitar um valor diferente de 1, 2 ou 3, o programa mostra que essa opção é inválida
         default:
             cout << "========================================" << endl;
             cout << endl;

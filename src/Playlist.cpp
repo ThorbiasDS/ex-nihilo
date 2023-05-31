@@ -107,7 +107,7 @@ Playlist::Playlist(Playlist &play)
 
 Playlist Playlist::operator+(Playlist &play)
 {
-
+    
 }
 
 Playlist Playlist::operator+(Musica *music)
