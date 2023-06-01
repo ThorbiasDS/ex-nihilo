@@ -1,9 +1,15 @@
+//Playlist.cpp
+
 #include "Playlist.h"
 #include "Musica.h"
 #include <string>
 #include <iostream>
 
 using namespace std;
+
+Playlist::Playlist()
+{
+}
 
 Playlist::Playlist(string nome)
 {
@@ -55,7 +61,7 @@ void Playlist::removerMusica(string titulo)
 Node<Musica *> Playlist::next_music()
 {
     Node<Musica *> *proxima = musicas.busca(contador);
-    if((contador+1) == musicas.tamanho)
+    if ((contador + 1) == musicas.tamanho)
     {
         return nullptr;
     }
@@ -89,7 +95,7 @@ int Playlist::removerMusica(Playlist *play)
     int quant = 0;
     for (int i = 0; i < play->getMusicas().tamanho; i++)
     {
-        if((this->musicas.busca(i)->dado->getTitulo()).compare(play->getMusicas().busca(i)->dado->getTitulo()) == 0)
+        if ((this->musicas.busca(i)->dado->getTitulo()).compare(play->getMusicas().busca(i)->dado->getTitulo()) == 0)
         {
             quant++;
         }
@@ -105,32 +111,67 @@ Playlist::Playlist(Playlist &play)
     this->musicas = play.musicas;
 }
 
-Playlist Playlist::operator+(Playlist &play)
+Playlist Playlist::operator+(Playlist *play)
 {
-    
+
+    Playlist result;
+    result = result + play;
+
+    for (int i = 0; i < play->getMusicas().tamanho; i++)
+    {
+        for (int j = 0; j < this->getMusicas().tamanho; j++)
+        {
+            if (play->getMusicas().busca(i)->dado->getTitulo().compare(this->getMusicas().busca(j)->dado->getTitulo()) == 0)
+            {
+                continue;
+            }
+            else
+            {
+                result << (this->getMusicas().busca(j)->dado);
+            }
+        }
+    }
+
+    return result;
 }
 
 Playlist Playlist::operator+(Musica *music)
 {
-
+    Playlist result;
+    result << (music);
+    return result;
 }
 
-Playlist Playlist::operator-(Playlist &play)
+Playlist Playlist::operator-(Playlist *play)
 {
+    Playlist result;
+    for (int i = 0; i < play->getMusicas().tamanho; i++)
+    {
+        for (int j = 0; j < this->getMusicas().tamanho; j++)
+        {
+            if (play->getMusicas().busca(i)->dado->getTitulo().compare(this->getMusicas().busca(j)->dado->getTitulo()) == 0)
+            {
+                continue;
+            }
+            else
+            {
+                result << (this->getMusicas().busca(j)->dado);
+            }
+        }
+    }
 
+    return result;
 }
 
 Playlist Playlist::operator-(Musica *music)
 {
-
+    Playlist result;
 }
 
 Playlist Playlist::operator>>(Musica *music)
 {
-
 }
 
 Playlist Playlist::operator<<(Musica *music)
 {
-    
 }
