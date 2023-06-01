@@ -338,7 +338,8 @@ int main(int argc, char *argv[])
     Node<Musica *> *proxima;
 
     /// @brief Variável para a manipulação de arquivos
-    ifstream arquivo("infos.txt");
+    ifstream arquivo;
+    arquivo.open("infos.txt", ios::in);
     int linha = 0;
     Lista<string> plays;
     Lista<string> descricao;
@@ -346,7 +347,7 @@ int main(int argc, char *argv[])
 
     while (!arquivo.eof())
     {
-        string entrada = getline(arquivo, linha);
+        string entrada = getline(arquivo, linha, ";");
         plays = split(entrada, ';');
         descricao = split(entrada, ':');
         criadores = split(entrada, ',');
