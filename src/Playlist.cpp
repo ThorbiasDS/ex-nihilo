@@ -180,8 +180,17 @@ for(int i = 0; i < this->getMusicas().tamanho; i++){
 
 Playlist Playlist::operator>>(Musica *music)
 {
+Node<Musica *> *aux = this->getMusicas().busca(this->getMusicas().tamanho - 1);
+        if (aux->proximo == nullptr)
+        {
+            music = nullptr;
+        }else{
+            music = this->getMusicas().busca(this->getMusicas().tamanho - 1)->dado;
+            this->getMusicas().remover(getMusicas().tamanho - 1);
+        }
 }
 
 Playlist Playlist::operator<<(Musica *music)
 {
 }
+
