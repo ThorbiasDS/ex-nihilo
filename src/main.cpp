@@ -96,6 +96,12 @@ void adicionar_playlists(string name)
     library.inserir(play);
 }
 
+/// \param plays Objeto playlist a ser adicionado
+void adicionar_playlists(Playlist &plays)
+{
+    library.inserir(&plays);
+}
+
 void listar_playlists()
 {
     for (int i = 0; i < library.tamanho; i++)
@@ -328,6 +334,40 @@ void editar_playlist()
 int main(int argc, char *argv[])
 {
 
+    /// @brief Variáveis para a manipulação de arquivos
+    ifstream file;
+    ofstream file_exit;
+    Lista<string> plays;
+    Lista<string> descricao;
+    Lista<string> criadores;
+    string linha;
+
+    file.open("infos.txt", ios::in);
+
+    if (!file) {
+        cout << "Impossivel abrir arquivo de entrada!" << endl;
+        abort();
+    }
+
+    while(!file.eof()) {
+        getline(file, linha);
+        plays = split(linha, ';');
+        descricao = split(linha, ':');
+        criadores = split(linha, ',');
+    }
+
+    for (int i = 0; i < plays.tamanho; i++)
+    {
+        adicionar_playlists(plays.busca(i)->dado);
+    }
+    
+    for (int i = 0; i < descricao.tamanho; i++)
+    {
+        adicionar_musicas(descricao.busca(i)->dado, criadores.busca(i)->dado);
+    }
+
+    file.close();
+
     /// @brief Variáveis para a escolha das opções nos menus
     int opcao = 0;
     int subopcao = 0;
@@ -336,22 +376,6 @@ int main(int argc, char *argv[])
     /// @brief Variáveis usadas para armazenar a playlist que está sendo tocada e para guardar a próxima música a ser tocada
     Node<Playlist *> *atual;
     Node<Musica *> *proxima;
-
-    /// @brief Variável para a manipulação de arquivos
-    ifstream arquivo;
-    arquivo.open("infos.txt", ios::in);
-    int linha = 0;
-    Lista<string> plays;
-    Lista<string> descricao;
-    Lista<string> criadores;
-
-    while (!arquivo.eof())
-    {
-        string entrada = getline(arquivo, linha, ";");
-        plays = split(entrada, ';');
-        descricao = split(entrada, ':');
-        criadores = split(entrada, ',');
-    }
 
     /// @brief Enquanto a opção for diferente de 3 chama o menu, quando for igual encerra o programa
     while (opcao != 3)
@@ -691,5 +715,13 @@ int main(int argc, char *argv[])
             cout << endl;
             break;
         }
+    }
+
+    file.open("exit.txt", ios::out);
+
+    if(!file)
+    {
+        cout << "Impossivel abrir arquivo de saída!" << endl;
+        abort();
     }
 }
