@@ -1,3 +1,5 @@
+//Playlist.h
+
 #ifndef PLAYLIST_H
 #define PLAYLIST_H
 
@@ -16,7 +18,8 @@ private:
     int contador;
 
 public:
-
+    
+    Playlist();
     Playlist(string nome);
     ~Playlist();
 
@@ -35,9 +38,9 @@ public:
     int removerMusica(Playlist *play);
     Playlist(Playlist &play);
 
-    Playlist operator+(Playlist &play);
+    Playlist operator+(Playlist *play);
     Playlist operator+(Musica *music);
-    Playlist operator-(Playlist &play);
+    Playlist operator-(Playlist *play);
     Playlist operator-(Musica *music);
     Playlist operator>>(Musica *music);
     Playlist operator<<(Musica *music);
