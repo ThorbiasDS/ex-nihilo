@@ -9,22 +9,22 @@
 #include "Playlist.h"
 #include <iostream>
 #include <string>
+#include <fstream>
 
 using namespace std;
 
 /**
  * \brief Listas globais de músicas e playlists
-*/
+ */
 
 Lista<Musica *> louvores;
 Lista<Playlist *> library;
 
 /**
  * \brief Funções pertencentes à opção Gerenciar Músicas
- * 
+ *
  * Essas funções servem para adicionar, remover e listar as músicas do sistema.
- * */ 
-
+ * */
 
 /// \param titulo Título da música
 /// \param artista Nome do autor da música
@@ -68,9 +68,9 @@ void listar_musicas()
     }
 }
 
-/** 
+/**
  * \brief Funções referentes à opção Gerenciar Playlists
- * 
+ *
  * Essas funções fazem a adição, remoção e listagem das playlists do sistema.
  * Além disso, temos as funções para tocar uma playlist e tocar a próxima música.
  * Por fim, há opção de entrar em uma submenu para a edição de playlists específicas
@@ -124,9 +124,9 @@ void remover_playlists(string name)
 
 /**
  * \brief Funções referentes ao submenu de edição de playlists
- * 
+ *
  * Aqui temos as opções de inserir música em uma determinada playlist, remover e listar
-*/
+ */
 
 /// @param name Nome da playlist
 /// @param title Título da música
@@ -136,17 +136,17 @@ int inserir_musica_playlist(string name, string title, string author)
 {
     bool existe = false;
     int op = 0;
-    
+
     for (int i = 0; i < library.tamanho; i++)
     {
         if (library.busca(i)->dado->getNome().compare(name) != 0)
         {
-            //Playlist não encontrada no sistema
+            // Playlist não encontrada no sistema
             op = 1;
         }
     }
 
-    //Encontrou a música correspondente
+    // Encontrou a música correspondente
     for (int i = 0; i < louvores.tamanho && existe == false; i++)
     {
         if (louvores.busca(i)->dado->getTitulo().compare(title) == 0)
@@ -162,7 +162,7 @@ int inserir_musica_playlist(string name, string title, string author)
         {
             if (library.busca(i)->dado->getNome().compare(name) == 0)
             {
-                //Música cadastrada com sucesso
+                // Música cadastrada com sucesso
                 library.busca(i)->dado->adicionarMusica(title, author);
                 op = 2;
             }
@@ -170,7 +170,7 @@ int inserir_musica_playlist(string name, string title, string author)
     }
     else
     {
-        //Música não cadastrada no sistema
+        // Música não cadastrada no sistema
         op = 3;
     }
     return op;
@@ -189,7 +189,7 @@ int remover_musica_playlist(string name, string title)
     {
         if (library.busca(i)->dado->getNome().compare(name) != 0)
         {
-            //Playlist não cadastrada no sistema
+            // Playlist não cadastrada no sistema
             op = 1;
         }
     }
@@ -198,7 +198,7 @@ int remover_musica_playlist(string name, string title)
     {
         if (louvores.busca(i)->dado->getTitulo().compare(title) == 0)
         {
-            //Encontrou a música correspondente
+            // Encontrou a música correspondente
             existe = true;
             break;
         }
@@ -210,7 +210,7 @@ int remover_musica_playlist(string name, string title)
         {
             if (library.busca(i)->dado->getNome().compare(name) == 0)
             {
-                //Música removida com sucesso
+                // Música removida com sucesso
                 library.busca(i)->dado->removerMusica(title);
                 op = 2;
             }
@@ -218,7 +218,7 @@ int remover_musica_playlist(string name, string title)
     }
     else
     {
-        //Música não cadastrada no sistema
+        // Música não cadastrada no sistema
         op = 3;
     }
     return op;
@@ -239,32 +239,36 @@ void listar_musicas_playlist(string name)
     }
 }
 
-//Funções referente à manipulação de arquivos
+// Funções referente à manipulação de arquivos
 
-Lista <string> split(string &texto, char separador)
+Lista<string> split(string &texto, char separador)
 {
     int inicio = 0;
     int fim = 0;
 
-    Lista <string> palavras;
+    Lista<string> palavras;
     string info;
-    
+
     fim = texto.find(separador);
 
-    info = texto.substr(inicio, fim);
-    palavras.inserir(info);
-    texto.erase(inicio, fim-inicio);
+    while (fim != string::npos)
+    {
+        info = texto.substr(inicio, fim);
+        palavras.inserir(info);
+        texto.erase(inicio, fim - inicio);
+        fim = texto.find(separador);
+    }
 
     return palavras;
 }
 
 /**
  * \brief Funções para as impressões dos menus
- * 
+ *
  * Essas funções são chamados no main para apresentar ao usuário as opções que ele tem disponível para usar no sistema.
-*/
+ */
 
-/// \brief Menu principal 
+/// \brief Menu principal
 void menu()
 {
     cout << "========================================" << endl;
@@ -290,31 +294,18 @@ void submenu1()
 }
 
 /// \brief Menu de gerenciar playlists
+
 void submenu2()
 {
     cout << "========================================" << endl;
-    cout << "1 - Tocar playlist" << endl;
-    cout << "2 - Criar playlist" << endl;
-    cout << "3 - Listar playlists" << endl;
+    cout << "1 - Criar playlist" << endl;
+    cout << "2 - Listar playlists" << endl;
+    cout << "3 - Editar playlist" << endl;
     cout << "4 - Remover playlist" << endl;
-    cout << "5 - Tocar próxima música" << endl;
-    cout << "6 - Editar playlist" << endl;
-    cout << "7 - Voltar ao menu principal" << endl;
-    cout << "========================================" << endl;
-    cout << "Escolha uma opção: ";
-}
-
-void submenu2_novo()
-{
-    cout << "========================================" << endl;
-    cout << "1 - Tocar playlist" << endl;
-    cout << "2 - Criar playlist" << endl;
-    cout << "3 - Listar playlists" << endl;
-    cout << "4 - Remover playlist" << endl;
-    cout << "5 - Tocar próxima música" << endl;
-    cout << "6 - Unir playlists" << endl;
-    cout << "7 - Subtrair playlists" << endl;
-    cout << "8 - Editar playlist" << endl;
+    cout << "5 - Tocar playlist" << endl;
+    cout << "6 - Tocar próxima música" << endl;
+    cout << "7 - Unir playlists" << endl;
+    cout << "8 - Subtrair playlists" << endl;
     cout << "9 - Voltar ao menu principal" << endl;
     cout << "========================================" << endl;
     cout << "Escolha uma opção: ";
@@ -322,18 +313,6 @@ void submenu2_novo()
 
 /// \brief Menu de editar playlists
 void editar_playlist()
-{
-    cout << "========================================" << endl;
-    cout << "1 - Inserir música" << endl;
-    cout << "2 - Mover música" << endl;
-    cout << "3 - Remover música" << endl;
-    cout << "4 - Listar músicas da playlist" << endl;
-    cout << "5 - Voltar ao menu principal" << endl;
-    cout << "========================================" << endl;
-    cout << "Escolha uma opção: ";
-}
-
-void editar_playlist_novo()
 {
     cout << "========================================" << endl;
     cout << "1 - Inserir música" << endl;
@@ -358,15 +337,20 @@ int main(int argc, char *argv[])
     Node<Playlist *> *atual;
     Node<Musica *> *proxima;
 
-    string p1 = "Melhores;Não Fale:Os Arrais,Por todos os dias:Projeto Sola, Entre Deuses:João Manô";
+    /// @brief Variável para a manipulação de arquivos
+    ifstream arquivo("infos.txt");
+    int linha = 0;
+    Lista<string> plays;
+    Lista<string> descricao;
+    Lista<string> criadores;
 
-    Lista <string> plays;
-    Lista <string> descricao;
-    Lista <string> criadores;
-    
-    plays = split(p1, ';');
-    descricao = split(p1, ':');
-    criadores = split(p1, ',');
+    while (!arquivo.eof())
+    {
+        string entrada = getline(arquivo, linha);
+        plays = split(entrada, ';');
+        descricao = split(entrada, ':');
+        criadores = split(entrada, ',');
+    }
 
     /// @brief Enquanto a opção for diferente de 3 chama o menu, quando for igual encerra o programa
     while (opcao != 3)
@@ -386,7 +370,8 @@ int main(int argc, char *argv[])
             {
                 string title, author;
 
-                while ((getchar()) != '\n');
+                while ((getchar()) != '\n')
+                    ;
                 cout << "Digite o nome da música: ";
                 getline(cin, title);
                 cout << "Agora digite o nome do artista: ";
@@ -403,7 +388,8 @@ int main(int argc, char *argv[])
             {
                 string title;
 
-                while ((getchar()) != '\n');
+                while ((getchar()) != '\n')
+                    ;
                 cout << "Digite o nome da música: ";
                 getline(cin, title);
 
@@ -437,36 +423,13 @@ int main(int argc, char *argv[])
             submenu2();
             cin >> subopcao;
 
-            /// @brief Tocar playlist
+            /// @brief Criar playlist
             if (subopcao == 1)
             {
                 string name;
 
-                while ((getchar()) != '\n');
-                cout << "Escutar qual playlist? ";
-                getline(cin, name);
-
-                atual = tocar_playlist(name);
-
-                if (atual != nullptr)
-                {
-                    cout << endl;
-                    cout << "Tocando " << atual->dado->getMusicas().busca(0)->dado->getTitulo() << "..." << endl;
-                    cout << endl;
-                }
-                else
-                {
-                    cout << "Playlist não encontrada!" << endl;
-                }
-                continue;
-            }
-
-            /// @brief Criar playlist
-            else if (subopcao == 2)
-            {
-                string name;
-
-                while ((getchar()) != '\n');
+                while ((getchar()) != '\n')
+                    ;
                 cout << "Digite o nome da playlist: ";
                 getline(cin, name);
 
@@ -477,7 +440,7 @@ int main(int argc, char *argv[])
             }
 
             /// @brief Listar playlists
-            else if (subopcao == 3)
+            else if (subopcao == 2)
             {
                 while ((getchar()) != '\n');
                 cout << "========================================" << endl;
@@ -488,44 +451,13 @@ int main(int argc, char *argv[])
                 cout << "========================================" << endl;
             }
 
-            /// @brief Remover playlist
-            else if (subopcao == 4)
-            {
-                string name;
-
-                while ((getchar()) != '\n');
-                cout << "Remover qual playlist? ";
-                getline(cin, name);
-
-                remover_playlists(name);
-                cout << endl;
-                cout << "Playlist removida!" << endl;
-                cout << endl;
-            }
-
-            /// @brief Tocar próxima música
-            else if (subopcao == 5)
-            {
-                *proxima = atual->dado->next_music();
-                if (proxima == nullptr)
-                {
-                    cout << "Não há músicas a serem tocadas!" << endl;
-                }
-                else
-                {
-                    cout << endl;
-                    cout << "Tocando " << proxima->dado->getTitulo() << "..." << endl;
-                    cout << endl;
-                }
-            }
-
             /// @brief Editar playlist
-            else if (subopcao == 6)
+            else if (subopcao == 3)
             {
                 editar_playlist();
                 cin >> subopcao2;
 
-                //Adicionar música na playlist
+                // Adicionar música na playlist
                 if (subopcao2 == 1)
                 {
                     string name, title, author;
@@ -538,7 +470,7 @@ int main(int argc, char *argv[])
                     getline(cin, title);
                     cout << "Agora digite o nome do artista: ";
                     getline(cin, author);
-                    
+
                     op = inserir_musica_playlist(name, title, author);
 
                     if (op == 1)
@@ -547,13 +479,13 @@ int main(int argc, char *argv[])
                         cout << "Playlist não cadastrada no sistema!" << endl;
                         cout << endl;
                     }
-                    else if(op == 2)
+                    else if (op == 2)
                     {
                         cout << endl;
                         cout << "Música adicionada com sucesso!" << endl;
                         cout << endl;
                     }
-                    else if(op == 3)
+                    else if (op == 3)
                     {
                         cout << endl;
                         cout << "Música não cadastrada no sistema!" << endl;
@@ -561,10 +493,9 @@ int main(int argc, char *argv[])
                     }
                 }
 
-                //Mover música
+                // Mover música
                 else if (subopcao2 == 2)
                 {
-
                     string title, author, origem, destino;
                     int op = 0;
                     int op2 = 0;
@@ -588,13 +519,13 @@ int main(int argc, char *argv[])
                         cout << "Playlist não cadastrada no sistema!" << endl;
                         cout << endl;
                     }
-                    else if(op == 2 && op2 == 2)
+                    else if (op == 2 && op2 == 2)
                     {
                         cout << endl;
                         cout << "Música movida com sucesso!" << endl;
                         cout << endl;
                     }
-                    else if(op == 3 && op2 == 3)
+                    else if (op == 3 && op2 == 3)
                     {
                         cout << endl;
                         cout << "Música não cadastrada no sistema!" << endl;
@@ -602,13 +533,14 @@ int main(int argc, char *argv[])
                     }
                 }
 
-                //Remover música da playlist
+                // Remover música da playlist
                 else if (subopcao2 == 3)
                 {
                     string name, title;
                     int op = 0;
 
-                    while ((getchar()) != '\n');
+                    while ((getchar()) != '\n')
+                        ;
                     cout << "Remover música de qual playlist? ";
                     getline(cin, name);
                     cout << "Digite o título da música: ";
@@ -622,13 +554,13 @@ int main(int argc, char *argv[])
                         cout << "Playlist não cadastrada no sistema!" << endl;
                         cout << endl;
                     }
-                    else if(op == 2)
+                    else if (op == 2)
                     {
                         cout << endl;
                         cout << "Música removida com sucesso!" << endl;
                         cout << endl;
                     }
-                    else if(op == 3)
+                    else if (op == 3)
                     {
                         cout << endl;
                         cout << "Música não cadastrada no sistema!" << endl;
@@ -641,7 +573,8 @@ int main(int argc, char *argv[])
                 {
                     string name;
 
-                    while ((getchar()) != '\n');
+                    while ((getchar()) != '\n')
+                        ;
                     cout << "Listar músicas de qual playlist? ";
                     getline(cin, name);
 
@@ -653,10 +586,92 @@ int main(int argc, char *argv[])
                     cout << "========================================" << endl;
                 }
 
-                //Voltar
-                else if (subopcao2 == 5){
-                    continue;
+                //Extrair última música
+                else if (subopcao2 == 5)
+                {
+                    
                 }
+
+                //Voltar ao menu principal
+                else if (subopcao2 == 6)
+                {
+
+                }
+            }
+
+            /// @brief Remover playlist
+            else if (subopcao == 4)
+            {
+                string name;
+
+                while ((getchar()) != '\n')
+                    ;
+                cout << "Remover qual playlist? ";
+                getline(cin, name);
+
+                remover_playlists(name);
+                cout << endl;
+                cout << "Playlist removida!" << endl;
+                cout << endl;
+            }
+
+            /// @brief Tocar playlist
+            else if (subopcao == 5)
+            {
+                string name;
+
+                while ((getchar()) != '\n')
+                    ;
+                cout << "Escutar qual playlist? ";
+                getline(cin, name);
+
+                atual = tocar_playlist(name);
+
+                if (atual != nullptr)
+                {
+                    cout << endl;
+                    cout << "Tocando " << atual->dado->getMusicas().busca(0)->dado->getTitulo() << "..." << endl;
+                    cout << endl;
+                }
+                else
+                {
+                    cout << "Playlist não encontrada!" << endl;
+                }
+                continue;
+            }
+
+            /// @brief Tocar próxima música
+            else if (subopcao == 6)
+            {
+                *proxima = atual->dado->next_music();
+                if (proxima == nullptr)
+                {
+                    cout << "Não há músicas a serem tocadas!" << endl;
+                }
+                else
+                {
+                    cout << endl;
+                    cout << "Tocando " << proxima->dado->getTitulo() << "..." << endl;
+                    cout << endl;
+                }
+            }
+
+            /// @brief Unir playlists
+            else if (subopcao == 7)
+            {
+
+            }
+
+            /// @brief Subtrair playlists
+            else if (subopcao == 8)
+            {
+
+            }
+
+            /// @brief Voltar ao menu principal
+            else if (subopcao == 9)
+            {
+                continue;
             }
             break;
 

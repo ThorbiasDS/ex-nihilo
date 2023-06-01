@@ -157,7 +157,7 @@ public:
         this->tamanho = list.tamanho;
     }
 
-    /// @brief Método de sobrecarga do operador +, 
+    /// @brief Método de sobrecarga do operador +, ele cria uma nova playlist contendo todas as músicas das duas playlists que estão sendo operadas
     /// @param list 
     /// @return 
     Lista<T> operator+(Lista<T> &list)
@@ -168,6 +168,8 @@ public:
         return result;
     }
 
+    /// @brief Método de sobrecarga do operador >>, ele extrai o último nó da lista e o atribui ao que é passado como argumento
+    /// @param no Nó que receberá o último da lista
     void operator>>(Node<T> *no)
     {
         Node<T> *aux = busca((this->tamanho - 1));
@@ -184,6 +186,8 @@ public:
         }
     }
 
+    /// @brief Método de sobrecarga do operador <<, ele adiciona o nó que é recebido como argumento no fim da lista
+    /// @param no Nó que será adicionado no fim da lista
     void operator<<(Node<T> *no)
     {
         if (no != nullptr)
