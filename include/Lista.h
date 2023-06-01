@@ -135,7 +135,7 @@ public:
         this->cauda = list.cauda;
     }
 
-    /// @brief Remove as músicas da playlist atual que estiverem na música recebida por parâmetro
+    /// @brief Remove as músicas da playlist atual que estiverem na playlist recebida por parâmetro
     /// @param list Playlist que contêm as músicas que devem ser removidas
     void remove_elements(Lista<T> &list)
     {

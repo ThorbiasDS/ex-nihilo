@@ -166,6 +166,16 @@ Playlist Playlist::operator-(Playlist *play)
 Playlist Playlist::operator-(Musica *music)
 {
     Playlist result;
+   
+
+for(int i = 0; i < this->getMusicas().tamanho; i++){
+    if(music->getTitulo().compare(this->getMusicas().busca(i)->dado->getTitulo())==0){
+       continue;
+    }else{
+        result.getMusicas().inserir(this->getMusicas().busca(i)->dado);
+    }
+}
+ return result;
 }
 
 Playlist Playlist::operator>>(Musica *music)
