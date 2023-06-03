@@ -22,7 +22,6 @@ Lista<Playlist *> library;
 
 /**
  * \brief Funções pertencentes à opção Gerenciar Músicas
- *
  * Essas funções servem para adicionar, remover e listar as músicas do sistema.
  * */
 
@@ -70,7 +69,6 @@ void listar_musicas()
 
 /**
  * \brief Funções referentes à opção Gerenciar Playlists
- *
  * Essas funções fazem a adição, remoção e listagem das playlists do sistema.
  * Além disso, temos as funções para tocar uma playlist e tocar a próxima música.
  * Por fim, há opção de entrar em uma submenu para a edição de playlists específicas
@@ -130,7 +128,6 @@ void remover_playlists(string name)
 
 /**
  * \brief Funções referentes ao submenu de edição de playlists
- *
  * Aqui temos as opções de inserir música em uma determinada playlist, remover e listar
  */
 
@@ -268,9 +265,21 @@ Lista<string> split(string &texto, char separador)
     return palavras;
 }
 
+void escrever(Playlist &play_saida, ofstream &arquivo)
+{
+    for (int i = 0; i < play_saida.getMusicas().tamanho; i++)
+    {
+        if (i == play_saida.getMusicas().tamanho-1)
+        {
+            arquivo << play_saida.getNome() << ";" << play_saida.getMusicas().busca(i)->dado->getTitulo() << ":" << play_saida.getMusicas().busca(i)->dado->getArtista();
+        }
+        arquivo << play_saida.getNome() << ";" << play_saida.getMusicas().busca(i)->dado->getTitulo() << ":" << play_saida.getMusicas().busca(i)->dado->getArtista() << ",";
+        arquivo << endl;
+    }   
+}
+
 /**
  * \brief Funções para as impressões dos menus
- *
  * Essas funções são chamados no main para apresentar ao usuário as opções que ele tem disponível para usar no sistema.
  */
 
@@ -337,18 +346,23 @@ int main(int argc, char *argv[])
     /// @brief Variáveis para a manipulação de arquivos
     ifstream file;
     ofstream file_exit;
+
     Lista<string> plays;
     Lista<string> descricao;
     Lista<string> criadores;
+
     string linha;
 
-    file.open("infos.txt", ios::in);
+    /// @brief Abertura do arquivo que é passado na incialização do programa e que vai ser lido
+    file.open(argv[1], ios::in);
 
+    /// @brief Se não for possível abrir o arquivo, uma mensagem é exibida e o programa é abortado
     if (!file) {
         cout << "Impossivel abrir arquivo de entrada!" << endl;
         abort();
     }
 
+    /// @brief Lê o arquivo e chama o método split para separação das informações enquanto o arquivo não tiver chegado ao fim
     while(!file.eof()) {
         getline(file, linha);
         plays = split(linha, ';');
@@ -356,16 +370,19 @@ int main(int argc, char *argv[])
         criadores = split(linha, ',');
     }
 
+    /// @brief For para adicionar todas as playlists que foram lidas no arquivo
     for (int i = 0; i < plays.tamanho; i++)
     {
         adicionar_playlists(plays.busca(i)->dado);
     }
     
+    /// @brief For para adicionar todas as músicas que foram lidas no arquivo
     for (int i = 0; i < descricao.tamanho; i++)
     {
         adicionar_musicas(descricao.busca(i)->dado, criadores.busca(i)->dado);
     }
 
+    /// @brief Fechado o arquivo de leitura
     file.close();
 
     /// @brief Variáveis para a escolha das opções nos menus
@@ -717,11 +734,23 @@ int main(int argc, char *argv[])
         }
     }
 
-    file.open("exit.txt", ios::out);
+    /// @brief Abertura do arquivo de escrita
+    file_exit.open("exit.txt", ios::out);
 
-    if(!file)
+    /// @brief Se não for possível abrir o arquivo de escrita, uma mensagem é exibida e o programa é abortado
+    if(!file_exit)
     {
         cout << "Impossivel abrir arquivo de saída!" << endl;
         abort();
     }
+
+    /// @brief Laço para percorrer todas as playlists do sistema e a lista de músicas que elas contêm para chamar o método escrever
+    for (int i = 0; i < library.tamanho; i++)
+    {
+        escrever(*library.busca(i)->dado, file_exit);
+    }
+
+    /// @brief Fechando o arquivo de escrita
+    file_exit.close();
+    
 }

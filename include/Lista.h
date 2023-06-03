@@ -7,7 +7,9 @@
 #ifndef LISTA_H
 #define LISTA_H
 
-/// @brief Essa classe implementa a nossa lista ligada, utilizando os nós criados na classe Node
+/**
+ * @brief Essa classe implementa a nossa lista ligada, utilizando os nós criados na classe Node
+*/
 
 #include "Node.h"
 #include <iostream>

@@ -1,4 +1,4 @@
-//Playlist.cpp
+// Playlist.cpp
 
 #include "Playlist.h"
 #include "Musica.h"
@@ -166,31 +166,31 @@ Playlist Playlist::operator-(Playlist *play)
 Playlist Playlist::operator-(Musica *music)
 {
     Playlist result;
-   
 
-for(int i = 0; i < this->getMusicas().tamanho; i++){
-    if(music->getTitulo().compare(this->getMusicas().busca(i)->dado->getTitulo())==0){
-       continue;
-    }else{
-        result.getMusicas().inserir(this->getMusicas().busca(i)->dado);
+    for (int i = 0; i < this->getMusicas().tamanho; i++)
+    {
+        if (music->getTitulo().compare(this->getMusicas().busca(i)->dado->getTitulo()) == 0)
+        {
+            continue;
+        }
+        else
+        {
+            result.getMusicas().inserir(this->getMusicas().busca(i)->dado);
+        }
+    }
+    return result;
+}
+
+void Playlist::operator>>(Musica *music)
+{
+    Node<Musica *> *aux = this->getMusicas().busca(this->getMusicas().tamanho - 1);
+    if (aux->proximo == nullptr)
+    {
+        music = nullptr;
+    }
+    else
+    {
+        music = this->getMusicas().busca(this->getMusicas().tamanho - 1)->dado;
+        this->getMusicas().remover(getMusicas().tamanho - 1);
     }
 }
- return result;
-}
-
-Playlist Playlist::operator>>(Musica *music)
-{
-Node<Musica *> *aux = this->getMusicas().busca(this->getMusicas().tamanho - 1);
-        if (aux->proximo == nullptr)
-        {
-            music = nullptr;
-        }else{
-            music = this->getMusicas().busca(this->getMusicas().tamanho - 1)->dado;
-            this->getMusicas().remover(getMusicas().tamanho - 1);
-        }
-}
-
-Playlist Playlist::operator<<(Musica *music)
-{
-}
-
