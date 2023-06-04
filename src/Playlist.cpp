@@ -193,4 +193,16 @@ void Playlist::operator>>(Musica *music)
         music = this->getMusicas().busca(this->getMusicas().tamanho - 1)->dado;
         this->getMusicas().remover(getMusicas().tamanho - 1);
     }
+
+    
 }
+
+void Playlist::operator<<(Musica *music){
+
+    if( music != nullptr){
+        this->getMusicas().cauda->proximo->dado=music;
+        this->getMusicas().cauda->dado=music;
+        this->musicas.tamanho++;
+    }
+}
+

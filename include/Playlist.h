@@ -96,10 +96,11 @@ public:
     /// @param music Recebe uma música em que será armazenada a última música da playlist
     void operator>>(Musica *music);
 
+
     /// @brief Sobrecarga do operador <<
     /// @param music Recebe uma música que será adicionada no final da playlist
     /// @return Retorna uma nova playlist contendo a nova música que foi adicionada
-    Playlist operator<<(Musica *music);
+    void operator<<(Musica *music);
 };
 
 #endif
