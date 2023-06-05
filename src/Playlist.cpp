@@ -54,6 +54,7 @@ void Playlist::removerMusica(string titulo)
         if (musicas.busca(i)->dado->getTitulo().compare(titulo) == 0)
         {
             musicas.remover(i);
+            delete this->musicas.busca(i);
         }
     }
 }
@@ -98,9 +99,12 @@ int Playlist::removerMusica(Playlist *play)
         if ((this->musicas.busca(i)->dado->getTitulo()).compare(play->getMusicas().busca(i)->dado->getTitulo()) == 0)
         {
             quant++;
+            this->getMusicas().remover(i);
+            delete this->getMusicas().busca(i);
         }
     }
-    musicas.remove_elements(play->musicas);
+    // musicas.remove_elements(play->musicas);
+    // delete play;
     return quant;
 }
 
@@ -192,9 +196,8 @@ void Playlist::operator>>(Musica *music)
     {
         music = this->getMusicas().busca(this->getMusicas().tamanho - 1)->dado;
         this->getMusicas().remover(getMusicas().tamanho - 1);
-    }
-
-    
+        delete this->getMusicas().busca(this->getMusicas().tamanho-1);
+    }    
 }
 
 void Playlist::operator<<(Musica *music){

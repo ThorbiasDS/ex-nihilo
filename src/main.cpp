@@ -44,7 +44,7 @@ void remover_musicas(string title)
             if (library.busca(i)->dado->getMusicas().busca(j)->dado->getTitulo().compare(title) == 0)
             {
                 library.busca(i)->dado->getMusicas().remover(j);
-                delete library.busca(i)->dado->getMusicas().busca(j);
+                delete library.busca(i)->dado->getMusicas().busca(j)->dado;
             }
         }
     }
@@ -54,7 +54,7 @@ void remover_musicas(string title)
         if (louvores.busca(i)->dado->getTitulo().compare(title) == 0)
         {
             louvores.remover(i);
-            delete louvores.busca(i);
+            delete louvores.busca(i)->dado;
         }
     }
 }
@@ -118,10 +118,10 @@ void remover_playlists(string name)
             for (int j = 0; j < library.busca(i)->dado->getMusicas().tamanho; j++)
             {
                 library.busca(i)->dado->getMusicas().remover(j);
-                delete library.busca(i)->dado->getMusicas().busca(j);
+                delete library.busca(i)->dado->getMusicas().busca(j)->dado;
             }
             library.remover(i);
-            delete library.busca(i);
+            delete library.busca(i)->dado;
         }
     }
 }
@@ -215,6 +215,7 @@ int remover_musica_playlist(string name, string title)
             {
                 // Música removida com sucesso
                 library.busca(i)->dado->removerMusica(title);
+                delete library.busca(i)->dado;
                 op = 2;
             }
         }
@@ -251,6 +252,7 @@ Lista<string> split(string &texto, char separador)
 
     Lista<string> palavras;
     string info;
+    string info2;
 
     fim = texto.find(separador);
 
@@ -258,7 +260,8 @@ Lista<string> split(string &texto, char separador)
     {
         info = texto.substr(inicio, fim);
         palavras.inserir(info);
-        texto.erase(inicio, fim - inicio);
+        // texto.erase(inicio, fim - inicio);
+        info2 = texto.substr(inicio, fim-inicio);
         fim = texto.find(separador);
     }
 
@@ -269,13 +272,21 @@ void escrever(Playlist &play_saida, ofstream &arquivo)
 {
     for (int i = 0; i < play_saida.getMusicas().tamanho; i++)
     {
-        if (i == play_saida.getMusicas().tamanho-1)
+        if (i == play_saida.getMusicas().tamanho - 1)
         {
             arquivo << play_saida.getNome() << ";" << play_saida.getMusicas().busca(i)->dado->getTitulo() << ":" << play_saida.getMusicas().busca(i)->dado->getArtista();
         }
         arquivo << play_saida.getNome() << ";" << play_saida.getMusicas().busca(i)->dado->getTitulo() << ":" << play_saida.getMusicas().busca(i)->dado->getArtista() << ",";
         arquivo << endl;
-    }   
+    }
+}
+
+Musica extrair_musica(string name)
+{
+}
+
+void adicionar_musica_fim(Musica music)
+{
 }
 
 /**
@@ -335,7 +346,8 @@ void editar_playlist()
     cout << "3 - Remover música" << endl;
     cout << "4 - Listar músicas da playlist" << endl;
     cout << "5 - Extair última música" << endl;
-    cout << "6 - Voltar ao menu principal" << endl;
+    cout << "6 - Inserir música no fim" << endl;
+    cout << "7 - Voltar ao menu principal" << endl;
     cout << "========================================" << endl;
     cout << "Escolha uma opção: ";
 }
@@ -357,13 +369,15 @@ int main(int argc, char *argv[])
     file.open(argv[1], ios::in);
 
     /// @brief Se não for possível abrir o arquivo, uma mensagem é exibida e o programa é abortado
-    if (!file) {
+    if (!file)
+    {
         cout << "Impossivel abrir arquivo de entrada!" << endl;
         abort();
     }
 
     /// @brief Lê o arquivo e chama o método split para separação das informações enquanto o arquivo não tiver chegado ao fim
-    while(!file.eof()) {
+    while (getline(file, linha))
+    {
         getline(file, linha);
         plays = split(linha, ';');
         descricao = split(linha, ':');
@@ -375,7 +389,7 @@ int main(int argc, char *argv[])
     {
         adicionar_playlists(plays.busca(i)->dado);
     }
-    
+
     /// @brief For para adicionar todas as músicas que foram lidas no arquivo
     for (int i = 0; i < descricao.tamanho; i++)
     {
@@ -484,7 +498,8 @@ int main(int argc, char *argv[])
             /// @brief Listar playlists
             else if (subopcao == 2)
             {
-                while ((getchar()) != '\n');
+                while ((getchar()) != '\n')
+                    ;
                 cout << "========================================" << endl;
                 cout << "Playlists cadastradas no sistema:" << endl;
                 cout << endl;
@@ -499,13 +514,14 @@ int main(int argc, char *argv[])
                 editar_playlist();
                 cin >> subopcao2;
 
-                // Adicionar música na playlist
+                /// @brief Adicionar música na playlist
                 if (subopcao2 == 1)
                 {
                     string name, title, author;
                     int op = 0;
 
-                    while ((getchar()) != '\n');
+                    while ((getchar()) != '\n')
+                        ;
                     cout << "Adicionar música em qual playlist? ";
                     getline(cin, name);
                     cout << "Digite o título da música: ";
@@ -535,14 +551,15 @@ int main(int argc, char *argv[])
                     }
                 }
 
-                // Mover música
+                /// @brief Mover música
                 else if (subopcao2 == 2)
                 {
                     string title, author, origem, destino;
                     int op = 0;
                     int op2 = 0;
 
-                    while ((getchar()) != '\n');
+                    while ((getchar()) != '\n')
+                        ;
                     cout << "Nome da playlist origem: ";
                     getline(cin, origem);
                     cout << "Nome da playlist destino: ";
@@ -575,7 +592,7 @@ int main(int argc, char *argv[])
                     }
                 }
 
-                // Remover música da playlist
+                /// @brief Remover música da playlist
                 else if (subopcao2 == 3)
                 {
                     string name, title;
@@ -610,7 +627,7 @@ int main(int argc, char *argv[])
                     }
                 }
 
-                //Listar músicas da playlist
+                /// @brief Listar músicas da playlist
                 else if (subopcao2 == 4)
                 {
                     string name;
@@ -628,16 +645,44 @@ int main(int argc, char *argv[])
                     cout << "========================================" << endl;
                 }
 
-                //Extrair última música
+                /// @brief Extrair última música
                 else if (subopcao2 == 5)
                 {
+                    string name;
+                    Musica music;
+
+                    while ((getchar()) != '\n');
+                    cout << "Digite o nome da playlist: ";
+                    getline(cin, name);
+
+                    music = extrair_musica(name);
+
+                    cout << "A música extraída foi: " << music.getTitulo() << endl;
                     
                 }
 
-                //Voltar ao menu principal
+                /// @brief Inserir música no fim
                 else if (subopcao2 == 6)
                 {
+                    Musica music;
 
+                    string title;
+                    string author;
+                    while ((getchar()) != '\n');
+                    cout << "Digite o nome da playlist: ";
+                    getline(cin, title);
+                    getline(cin, author);
+
+                    music.setTitulo(title);
+                    music.setArtista(author);
+
+                    adicionar_musica_fim(music);
+
+                }
+
+                /// @brief Voltar ao menu principal
+                else if (subopcao2 == 7)
+                {
                 }
             }
 
@@ -701,56 +746,103 @@ int main(int argc, char *argv[])
             /// @brief Unir playlists
             else if (subopcao == 7)
             {
+                string name1, name2;
+                Playlist p1;
 
+                while ((getchar()) != '\n')
+                    ;
+                cout << "Digite o nome da primeira playlist: ";
+                getline(cin, name1);
+
+                cout << "Digite o nome da segunda playlist: ";
+                getline(cin, name2);
+
+                for (int i = 0; i < library.tamanho; i++)
+                {
+                    if (library.busca(i)->dado->getNome().compare(name1) == 0)
+                    {
+                        for (int j = 0; j < library.tamanho; j++)
+                        {
+                            if (library.busca(j)->dado->getNome().compare(name2) == 0)
+                            {
+                                p1 = library.busca(i)->dado->operator+(library.busca(j)->dado);
+                            }
+                        }
+                    }
+                }
+                library.inserir(&p1);
             }
 
             /// @brief Subtrair playlists
             else if (subopcao == 8)
             {
+                string name1, name2;
+                Playlist p1;
 
+                while ((getchar()) != '\n')
+                    ;
+                cout << "Digite o nome da primeira playlist: ";
+                getline(cin, name1);
+
+                cout << "Digite o nome da segunda playlist: ";
+                getline(cin, name2);
+
+                for (int i = 0; i < library.tamanho; i++)
+                {
+                    if (library.busca(i)->dado->getNome().compare(name1) == 0)
+                    {
+                        for (int j = 0; j < library.tamanho; j++)
+                        {
+                            if (library.busca(j)->dado->getNome().compare(name2) == 0)
+                            {
+                                p1 = library.busca(i)->dado->operator-(library.busca(j)->dado);
+                            }
+                        }
+                    }
+                }
+                library.inserir(&p1);
             }
 
-            /// @brief Voltar ao menu principal
-            else if (subopcao == 9)
-            {
-                continue;
-            }
-            break;
-
-        /// @brief Encerrar o programa
-        case 3:
-            cout << "========================================" << endl;
-            cout << "||   Obrigado por usar o Ex Nihilo!   ||" << endl;
-            cout << "========================================" << endl;
-            break;
-
-        /// @brief Se o usuário digitar um valor diferente de 1, 2 ou 3, o programa mostra que essa opção é inválida
-        default:
-            cout << "========================================" << endl;
-            cout << endl;
-            cout << "Opção inválida, tente novamente." << endl;
-            cout << endl;
-            break;
+        /// @brief Voltar ao menu principal
+        else if (subopcao == 9)
+        {
+            continue;
         }
+        break;
+
+    /// @brief Encerrar o programa
+    case 3:
+        cout << "========================================" << endl;
+        cout << "||   Obrigado por usar o Ex Nihilo!   ||" << endl;
+        cout << "========================================" << endl;
+        break;
+
+    /// @brief Se o usuário digitar um valor diferente de 1, 2 ou 3, o programa mostra que essa opção é inválida
+    default:
+        cout << "========================================" << endl;
+        cout << endl;
+        cout << "Opção inválida, tente novamente." << endl;
+        cout << endl;
+        break;
     }
+}
 
-    /// @brief Abertura do arquivo de escrita
-    file_exit.open("exit.txt", ios::out);
+/// @brief Abertura do arquivo de escrita
+file_exit.open("exit.txt", ios::out);
 
-    /// @brief Se não for possível abrir o arquivo de escrita, uma mensagem é exibida e o programa é abortado
-    if(!file_exit)
-    {
-        cout << "Impossivel abrir arquivo de saída!" << endl;
-        abort();
-    }
+/// @brief Se não for possível abrir o arquivo de escrita, uma mensagem é exibida e o programa é abortado
+if (!file_exit)
+{
+    cout << "Impossivel abrir arquivo de saída!" << endl;
+    abort();
+}
 
-    /// @brief Laço para percorrer todas as playlists do sistema e a lista de músicas que elas contêm para chamar o método escrever
-    for (int i = 0; i < library.tamanho; i++)
-    {
-        escrever(*library.busca(i)->dado, file_exit);
-    }
+/// @brief Laço para percorrer todas as playlists do sistema e a lista de músicas que elas contêm para chamar o método escrever
+for (int i = 0; i < library.tamanho; i++)
+{
+    escrever(*library.busca(i)->dado, file_exit);
+}
 
-    /// @brief Fechando o arquivo de escrita
-    file_exit.close();
-    
+/// @brief Fechando o arquivo de escrita
+file_exit.close();
 }

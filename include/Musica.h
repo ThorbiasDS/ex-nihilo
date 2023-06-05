@@ -31,6 +31,7 @@ public:
     /// @param titulo String que será colocada no atributo titulo na hora da construção de um objeto Musica
     /// @param artista String que será colocada no atributo artista na hora da construção de um objeto Musica
     Musica(string titulo, string artista);
+    Musica();
 
     //Destutor da classe
     ~Musica();

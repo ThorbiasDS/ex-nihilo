@@ -9,6 +9,12 @@ Musica::Musica(string titulo, string artista)
     this->artista = artista;
 }
 
+Musica::Musica()
+{
+    this->titulo = "";
+    this->artista = "";
+}
+
 Musica::~Musica()
 {
 }
