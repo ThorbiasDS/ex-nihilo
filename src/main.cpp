@@ -1,4 +1,4 @@
-/** Descrição do arquivo.
+/** Ex Nihilo - Gerenciador de músicas
 /*
 * @author Hosana Iasmin & Tobias Daniel
 * @since 01/05/2023
@@ -34,7 +34,7 @@ void adicionar_musicas(string title, string author)
 }
 
 /// \param titulo Título da música
-/// \return Retorna verdadeiro se as músicas foram removidas com sucesso da playlist e do sistema
+/// \return Retorna verdadeiro se as músicas foram removidas com sucesso das playlists em que estão inseridas e de todo o sistema
 void remover_musicas(string title)
 {
     for (int i = 0; i < library.tamanho; i++)
@@ -70,7 +70,7 @@ void listar_musicas()
 /**
  * \brief Funções referentes à opção Gerenciar Playlists
  * Essas funções fazem a adição, remoção e listagem das playlists do sistema.
- * Além disso, temos as funções para tocar uma playlist e tocar a próxima música.
+ * Além disso, temos a função para tocar uma playlist.
  * Por fim, há opção de entrar em uma submenu para a edição de playlists específicas
  * */
 
@@ -243,7 +243,65 @@ void listar_musicas_playlist(string name)
     }
 }
 
+/// @param name Nome da playlist em que será extraída a última música
+/// @return Retorna a música que foi extraída
+Musica extrair_musica(string name)
+{
+    Musica *music;
+    for (int i = 0; i < library.tamanho; i++)
+    {
+        if (library.busca(i)->dado->getNome().compare(name) == 0)
+        {
+            library.busca(i)->dado->operator>>(music);
+        }
+    }
+    return *music;
+}
+
+/// @param name Nome da playlist em que será adicionada uma música no fim
+/// @param title Título da música a ser adicionada
+/// @param author Artista da música a ser adicionada
+void adicionar_musica_fim(string name, string title, string author)
+{
+    for (int i = 0; i < library.tamanho; i++)
+    {
+        if (library.busca(i)->dado->getNome().compare(name) == 0)
+        {
+            for (int j = 0; j < louvores.tamanho; j++)
+            {
+                if (louvores.busca(j)->dado->getTitulo().compare(title) == 0)
+                {
+                    library.busca(i)->dado->operator<<(louvores.busca(j)->dado);
+                }
+            }
+        }
+    }
+}
+
 // Funções referente à manipulação de arquivos
+
+// Lista<string> split(string &texto, char separador)
+// {
+//     int inicio = 0;
+//     int fim = 0;
+
+//     Lista<string> palavras;
+//     string info;
+//     string info2;
+
+//     fim = texto.find(separador);
+
+//     while (fim != string::npos)
+//     {
+//         info = texto.substr(inicio, fim);
+//         palavras.inserir(info);
+//         // texto.erase(inicio, fim - inicio);
+//         info2 = texto.substr(inicio, fim - inicio);
+//         fim = texto.find(separador);
+//     }
+
+//     return palavras;
+// }
 
 Lista<string> split(string &texto, char separador)
 {
@@ -251,18 +309,25 @@ Lista<string> split(string &texto, char separador)
     int fim = 0;
 
     Lista<string> palavras;
-    string info;
-    string info2;
 
-    fim = texto.find(separador);
-
-    while (fim != string::npos)
+    // Enquanto houver o separador na string
+    while ((fim = texto.find(separador, inicio)) != string::npos)
     {
-        info = texto.substr(inicio, fim);
-        palavras.inserir(info);
-        // texto.erase(inicio, fim - inicio);
-        info2 = texto.substr(inicio, fim-inicio);
-        fim = texto.find(separador);
+        // Obtém a substring entre o início e o separador
+        string palavra = texto.substr(inicio, fim - inicio);
+        
+        // Insere a palavra na lista
+        palavras.inserir(palavra);
+
+        // Atualiza o índice de início para a próxima palavra
+        inicio = fim + 1;
+    }
+
+    // Verifica se há uma palavra após o último separador
+    if (inicio < texto.size())
+    {
+        string palavra = texto.substr(inicio);
+        palavras.inserir(palavra);
     }
 
     return palavras;
@@ -279,14 +344,6 @@ void escrever(Playlist &play_saida, ofstream &arquivo)
         arquivo << play_saida.getNome() << ";" << play_saida.getMusicas().busca(i)->dado->getTitulo() << ":" << play_saida.getMusicas().busca(i)->dado->getArtista() << ",";
         arquivo << endl;
     }
-}
-
-Musica extrair_musica(string name)
-{
-}
-
-void adicionar_musica_fim(Musica music)
-{
 }
 
 /**
@@ -320,7 +377,6 @@ void submenu1()
 }
 
 /// \brief Menu de gerenciar playlists
-
 void submenu2()
 {
     cout << "========================================" << endl;
@@ -365,6 +421,7 @@ int main(int argc, char *argv[])
 
     string linha;
 
+/*
     /// @brief Abertura do arquivo que é passado na incialização do programa e que vai ser lido
     file.open(argv[1], ios::in);
 
@@ -398,6 +455,7 @@ int main(int argc, char *argv[])
 
     /// @brief Fechado o arquivo de leitura
     file.close();
+    */
 
     /// @brief Variáveis para a escolha das opções nos menus
     int opcao = 0;
@@ -651,33 +709,33 @@ int main(int argc, char *argv[])
                     string name;
                     Musica music;
 
-                    while ((getchar()) != '\n');
+                    while ((getchar()) != '\n')
+                        ;
                     cout << "Digite o nome da playlist: ";
                     getline(cin, name);
 
                     music = extrair_musica(name);
 
                     cout << "A música extraída foi: " << music.getTitulo() << endl;
-                    
                 }
 
                 /// @brief Inserir música no fim
                 else if (subopcao2 == 6)
                 {
-                    Musica music;
-
                     string title;
                     string author;
-                    while ((getchar()) != '\n');
+                    string name;
+
+                    while ((getchar()) != '\n')
+                        ;
                     cout << "Digite o nome da playlist: ";
+                    getline(cin, name);
+                    cout << "Digite o título da música: ";
                     getline(cin, title);
+                    cout << "Digite o artista da música: ";
                     getline(cin, author);
 
-                    music.setTitulo(title);
-                    music.setArtista(author);
-
-                    adicionar_musica_fim(music);
-
+                    adicionar_musica_fim(name, title, author);
                 }
 
                 /// @brief Voltar ao menu principal
@@ -803,46 +861,48 @@ int main(int argc, char *argv[])
                 library.inserir(&p1);
             }
 
-        /// @brief Voltar ao menu principal
-        else if (subopcao == 9)
-        {
-            continue;
+            /// @brief Voltar ao menu principal
+            else if (subopcao == 9)
+            {
+                continue;
+            }
+            break;
+
+        /// @brief Encerrar o programa
+        case 3:
+            cout << "========================================" << endl;
+            cout << "||   Obrigado por usar o Ex Nihilo!   ||" << endl;
+            cout << "========================================" << endl;
+            break;
+
+        /// @brief Se o usuário digitar um valor diferente de 1, 2 ou 3, o programa mostra que essa opção é inválida
+        default:
+            cout << "========================================" << endl;
+            cout << endl;
+            cout << "Opção inválida, tente novamente." << endl;
+            cout << endl;
+            break;
         }
-        break;
-
-    /// @brief Encerrar o programa
-    case 3:
-        cout << "========================================" << endl;
-        cout << "||   Obrigado por usar o Ex Nihilo!   ||" << endl;
-        cout << "========================================" << endl;
-        break;
-
-    /// @brief Se o usuário digitar um valor diferente de 1, 2 ou 3, o programa mostra que essa opção é inválida
-    default:
-        cout << "========================================" << endl;
-        cout << endl;
-        cout << "Opção inválida, tente novamente." << endl;
-        cout << endl;
-        break;
     }
-}
 
-/// @brief Abertura do arquivo de escrita
-file_exit.open("exit.txt", ios::out);
+    /*
+    /// @brief Abertura do arquivo de escrita
+    file_exit.open("exit.txt", ios::out);
 
-/// @brief Se não for possível abrir o arquivo de escrita, uma mensagem é exibida e o programa é abortado
-if (!file_exit)
-{
-    cout << "Impossivel abrir arquivo de saída!" << endl;
-    abort();
-}
+    /// @brief Se não for possível abrir o arquivo de escrita, uma mensagem é exibida e o programa é abortado
+    if (!file_exit)
+    {
+        cout << "Impossivel abrir arquivo de saída!" << endl;
+        abort();
+    }
 
-/// @brief Laço para percorrer todas as playlists do sistema e a lista de músicas que elas contêm para chamar o método escrever
-for (int i = 0; i < library.tamanho; i++)
-{
-    escrever(*library.busca(i)->dado, file_exit);
-}
+    /// @brief Laço para percorrer todas as playlists do sistema e a lista de músicas que elas contêm para chamar o método escrever
+    for (int i = 0; i < library.tamanho; i++)
+    {
+        escrever(*library.busca(i)->dado, file_exit);
+    }
 
-/// @brief Fechando o arquivo de escrita
-file_exit.close();
+    /// @brief Fechando o arquivo de escrita
+    file_exit.close();
+    */
 }
